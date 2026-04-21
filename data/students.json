@@ -1,10 +1,20 @@
 [
     {
-        "id": "1",
-        "name": "alice"
+        "id": 1,
+        "name": "test",
+        "age": "21",
+        "grade": "A"
     },
     {
-        "id": "2",
-        "name": "bob"
+        "id": 2,
+        "name": "Amara",
+        "age": "22",
+        "grade": "D"
+    },
+    {
+        "id": 3,
+        "name": "123",
+        "age": "Asd",
+        "grade": "S"
     }
 ]
