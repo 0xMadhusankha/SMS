@@ -10,10 +10,29 @@ def save_record(students):
     pass
 
 def add_student(students):
-    pass
+    print("\n-- Add Student --\n")
+    name = input("Name: ").strip() # .strip remove extra spaces
+    age = input("Age: ").strip()
+    grade = input("Grade: ").strip()
+    id = len(students) + 1 # auto generate the student ID
+
+    students.append({
+        "id" : id,
+        "name" : name,
+        "age" : age,
+        "grade" : grade
+    })
+
+    print(f"Student '{name}' added successfully.")
 
 def view_student(students):
-    pass
+    print("\n-- All students --\n")
+
+    if not students:                # if list is empty show no record found
+        print("No records found.")
+        return                      # safely exit the function
+    for i in students:              # loop every student and print it
+        print(f"ID: {i['id']} | Name: {i['name']} | Age: {i['age']} | Grade: {i['grade']}")
 
 def search_student(students):
     pass
@@ -35,7 +54,7 @@ def main():
         print("4. Update student")
         print("5. Delete student")
         print("6. Save records")
-        print("7. Exit")
+        print("7. Exit\n")
 
         choice = input("Enter your choice: ").strip()
 
