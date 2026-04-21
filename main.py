@@ -4,17 +4,24 @@ import os
 DATA_FILE = "data/students.json"
 
 def load_students():
-    return[]
+    if os.path.exists(DATA_FILE):           # check if file already exists
+        with open(DATA_FILE, "r") as file:
+            return json.load(file)          # read and return the data
+    return []                               # if no file yet, return empty list
 
 def save_record(students):
-    pass
+    os.makedirs("data", exist_ok=True)      # create data folder if its missing
+    with open(DATA_FILE, "w") as file:
+        json.dump(students, file, indent=4) # write data to file
+
+    print("Records saved successfully.")
 
 def add_student(students):
     print("\n-- Add Student --\n")
-    name = input("Name: ").strip() # .strip remove extra spaces
+    name = input("Name: ").strip()      # .strip remove extra spaces
     age = input("Age: ").strip()
     grade = input("Grade: ").strip()
-    id = len(students) + 1 # auto generate the student ID
+    id = len(students) + 1              # auto generate the student ID
 
     students.append({
         "id" : id,
