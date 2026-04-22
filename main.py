@@ -78,7 +78,67 @@ def get_valid_grade(prompt):
 
         return grade
 
+# helper finction for find students by name, then let the user pock one by ID
+# if we search by name, it can be duplicate. so this function helps to get actual data
 
+def find_student_by_name_then_id(students, action_label):       # the action_label is search, update or delete function 
+    # step 1 - ask for a name and show all matches.
+    while True:
+        name = input("Enter name to search: ").strip().lower()
+        if name == "":     # check if user input is blank
+            print("search name cannot be empty. Please try again")
+            continue
+        else:
+            break           # valid input, exit the wihle loop
+
+    # step 2 - find the all students whoes name contains user input
+
+    matches = []                                # create a empty list for store filtred data
+    for student in students:
+        if name in student["name"].lower():     # get the student names with lowercase
+            matches.append(student)             # put all matched records to empty list
+    
+    if len(matches) == 0:                       # if nothing found stop 
+        print("No student found with that name")
+        return None
+
+    # step 3 - show all match records
+    print(f"\n Found {len(matches)} matching records:\n")
+    for s in matches:
+        print(f"ID: {s['id']} | Name: {s['name']} | Age: {s['age']} | Grade: {s['grade']}")
+
+    # step 4 - if only one match, ask to confirm instead of picking
+    if len(matches) == 1:
+        confirm = input(f"Only one match found. {action_label.capitalize()} this student? (yes/no)").strip().lower()
+        if confirm == "yes":
+            return matches[0]
+        else:
+            print("Action cancelled.")
+            return None
+
+    # Step 5 -if multiple matches, ask user to pick by ID
+    while True:
+        picked_id = input(f"\n Enter the ID of the student you want to {action_label}: ").strip()
+
+        if not picked_id.isdigit():
+            print("Please enter a valid number ID")
+            continue
+
+        picked_id = int(picked_id)
+
+        found = None
+        for s in matches:
+            if s["id"] == picked_id:
+                found = s
+                break
+
+        if found is None:
+            print("That ID is not in the list above. Try again.")
+            continue
+
+        return found        # return valid ID
+
+# ========== Features =========
 
 def add_student(students):
     print("\n-- Add Student --\n")
@@ -103,58 +163,96 @@ def view_student(students):
     if not students:                # if list is empty show no record found
         print("No records found.")
         return                      # safely exit the function
+
     for i in students:              # loop every student and print it
         print(f"ID: {i['id']} | Name: {i['name']} | Age: {i['age']} | Grade: {i['grade']}")
 
 def search_student(students):
     print("\n--- Search Student --\n")
-    name = input("Enter name to search: ").strip().lower()
-    result = []
 
-    for student in students:                        # looping the student list
-        student_name = student["name"].lower()
+    while True:
+        name = input("Enter name to search: ").strip().lower()
+        if name == "":
+            print("Search name cannot be empty. Please try again")
+        else:
+            break
 
-        if name in student_name:                    # check if user input is match
-            result.append(student)                  # add matched student details to list
-    
-    if result:
-        for s in result:
-            print(f"\nID: {s['id']} | Name: {s['name']} | Age: {s['age']} | Grade: {s['grade']}")   # print the results
-    else:
-        print("No record found.")
+    matches = []
+    for student in students:
+        if name in student["name"].lower():
+            matches.append(student)
+
+    if not matches:
+        print(" No record found.")
+        return
+
+    print(f"\n Found {len(matches)} matching records:\n")
+    for s in matches:
+        print(f" ID: {s['id']} | Name: {s['name']} | Age: {s['age']} | Grade: {s['grade']}")
+
 
 def update_student(students):
     print("\n-- Update student --")
-    name = input("Enter name of student to update: ").strip().lower()
-    for student in students:
-        if student["name"].lower() == name:     # check if user entered student exit
-            print(f"Current: Name: {student['name']} | Age: {student['age']} | Grade: {student['grade']}")  # if the student exit print current details
-            new_age = input("Enter New Age (press enter to keep current): ").strip()
-            new_grade = input("Enter New Grade (press enter to keep current): ").strip()
 
-            if new_age:                         # check if user enter the new data
-                student['age'] = new_age        # if new data found update it
-            if new_grade:
-                student['grade'] = new_grade
-            print("Student Update successfully.")
-            return
-    print("Student not found")
+    student = find_student_by_name_then_id(students, "update")
+
+    if student is None:
+        return
+
+    print(f"\nCurrent details:")
+    print(f" Name: {student['name']} | Age: {student['age']} | Grade: {student['grade']}")
+    print(" (Press Enter to keep the current value)\n")
+
+    # ask new values - empty field mean keep the old value
+    new_name  = input(f"  New Name  [{student['name']}]: ").strip()
+    new_age   = input(f"  New Age   [{student['age']}]: ").strip()
+    new_grade = input(f"  New Grade [{student['grade']}]: ").strip()
+
+    # validate new name
+    if new_name != "":
+        if not new_name.replace(" ", "").isalpha():
+            print("Invalid name. Name was not updated")
+        else:
+            student["name"] = new_name
+    
+    # validate new age
+    if new_age != "":
+        if not new_age.isdigit() or int(new_age) < 1 or int(new_age) > 30:
+            print("Invalid age. Age was not updated")
+        else:
+            student["age"] = new_age
+    
+    # validate new grade
+    if new_grade != "":
+        allowed_grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"]
+        new_grade = new_grade.upper()       # make the grade uppercase
+
+        if new_grade not in allowed_grades:
+            print(f"  ⚠  Invalid grade. Grade was not updated. Allowed: {', '.join(allowed_grades)}")
+        else:
+            student["grade"] = new_grade
+            
+    print("\nStudent updated successfully.")
 
 def delete_student(students):
     print("\n-- Delete student --")
-    name = input("Enter name of student to delete: ").strip().lower()
+    
+    student = find_student_by_name_then_id(students,"update")
 
-    for student in students:
-        if student["name"].lower() == name:
-            students.remove(student)
-            print(f"Student '{student['name']}' deleted.")
-            return
-    print("Student not found.")
+    if student is None:
+        return              # nothing found or user cancelled
 
+    # confirm before delete
+    confirm =  input(f"\n  Are you sure you want to delete '{student['name']}'? (yes/no): ").strip().lower()
+
+    if confirm == "yes":
+        students.remove(student)
+        print(f" Student '{student['name']}' deleted successfully.")
 
 def main():
 
     students = load_students()
+
     while True:
         print("\n=== Student Management System ===\n")
         print("1. Add student")

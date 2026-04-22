@@ -4,5 +4,29 @@
         "name": "admin",
         "age": 23,
         "grade": "A+"
+    },
+    {
+        "id": 2,
+        "name": "test",
+        "age": 24,
+        "grade": "C-"
+    },
+    {
+        "id": 3,
+        "name": "Malith",
+        "age": 23,
+        "grade": "B+"
+    },
+    {
+        "id": 5,
+        "name": "madhu",
+        "age": 21,
+        "grade": "A-"
+    },
+    {
+        "id": 6,
+        "name": "abc",
+        "age": 25,
+        "grade": "D"
     }
 ]
