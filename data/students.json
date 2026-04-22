@@ -1,20 +1,8 @@
 [
     {
         "id": 1,
-        "name": "test",
-        "age": "21",
-        "grade": "A"
-    },
-    {
-        "id": 2,
-        "name": "Amara",
-        "age": "22",
-        "grade": "D"
-    },
-    {
-        "id": 3,
-        "name": "Madhusanka Nayanajith",
-        "age": "22",
-        "grade": "A"
+        "name": "admin",
+        "age": 23,
+        "grade": "A+"
     }
 ]
