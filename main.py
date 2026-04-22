@@ -42,13 +42,50 @@ def view_student(students):
         print(f"ID: {i['id']} | Name: {i['name']} | Age: {i['age']} | Grade: {i['grade']}")
 
 def search_student(students):
-    pass
+    print("\n--- Search Student --\n")
+    name = input("Enter name to search: ").strip().lower()
+    result = []
+
+    for student in students:                        # looping the student list
+        student_name = student["name"].lower()
+
+        if name in student_name:                    # check if user input is match
+            result.append(student)                  # add matched student details to list
+    
+    if result:
+        for s in result:
+            print(f"\nID: {s['id']} | Name: {s['name']} | Age: {s['age']} | Grade: {s['grade']}")   # print the results
+    else:
+        print("No record found.")
 
 def update_student(students):
-    pass
+    print("\n-- Update student --")
+    name = input("Enter name of student to update: ").strip().lower()
+    for student in students:
+        if student["name"].lower() == name:     # check if user entered student exit
+            print(f"Current: Name: {student['name']} | Age: {student['age']} | Grade: {student['grade']}")  # if the student exit print current details
+            new_age = input("Enter New Age (press enter to keep current): ").strip()
+            new_grade = input("Enter New Grade (press enter to keep current): ").strip()
+
+            if new_age:                         # check if user enter the new data
+                student['age'] = new_age        # if new data found update it
+            if new_grade:
+                student['grade'] = new_grade
+            print("Student Update successfully.")
+            return
+    print("Student not found")
 
 def delete_student(students):
-    pass
+    print("\n-- Delete student --")
+    name = input("Enter name of student to delete: ").strip().lower()
+
+    for student in students:
+        if student["name"].lower() == name:
+            students.remove(student)
+            print(f"Student '{student['name']}' deleted.")
+            return
+    print("Student not found.")
+
 
 def main():
 
