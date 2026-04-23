@@ -1,32 +1,20 @@
 [
     {
         "id": 1,
-        "name": "admin",
-        "age": 23,
-        "grade": "A+"
+        "name": "sunil",
+        "age": 22,
+        "grade": "D-"
     },
     {
         "id": 2,
-        "name": "test",
-        "age": 24,
-        "grade": "C-"
+        "name": "amara",
+        "age": 28,
+        "grade": "A+"
     },
     {
         "id": 3,
-        "name": "Malith",
-        "age": 23,
-        "grade": "B+"
-    },
-    {
-        "id": 5,
-        "name": "madhu",
-        "age": 21,
+        "name": "amarasinghe",
+        "age": 19,
         "grade": "A-"
-    },
-    {
-        "id": 6,
-        "name": "abc",
-        "age": 25,
-        "grade": "D"
     }
 ]
