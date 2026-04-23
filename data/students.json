@@ -1,8 +1,20 @@
 [
     {
         "id": 1,
-        "name": "admin",
-        "age": 23,
+        "name": "sunil",
+        "age": 22,
+        "grade": "D-"
+    },
+    {
+        "id": 2,
+        "name": "amara",
+        "age": 28,
         "grade": "A+"
+    },
+    {
+        "id": 3,
+        "name": "amarasinghe",
+        "age": 19,
+        "grade": "A-"
     }
 ]
