@@ -1,5 +1,8 @@
+from csv import writer
+from os import write
 import json
 import os
+import csv
 
 DATA_FILE = "data/students.json"
 
@@ -363,6 +366,36 @@ def delete_student(students):
         # The user needs to know their cancel was received.
         print("Delete cancelled.")
 
+# Export student details as CSV file
+def export_to_cvs(students):
+    if not students:
+        print("No records to export.")
+        return
+    
+    csv_file = "data/students.csv"
+
+    # os.makedirs creates the data/ folder if it dose not exist yet.
+    # exist_ok=True - this mean if the folder already exists, this will not crash the programm
+    os.makedirs("data", exist_ok=True)
+
+    # open the file with write mode
+    # newline="" - is required to prevent blank lines between rows on windows
+    with open(csv_file, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)                           # csv.writer - turns python lists into CSV formatted lines
+        writer.writerow(["ID", "Name", "Age", "Grade"])     # writerow() - writes one row this is the header row
+
+        # loop every student and write data as a row
+        for student in students:
+            writer.writerow([
+                student["id"],
+                student["name"],
+                student["age"],
+                student["grade"]
+            ])
+
+    # display where the file saved  
+    print(f"Exported {len(students)} students to {csv_file}")
+
 
 #  MAIN MENU
 
@@ -377,7 +410,8 @@ def main():
         print("4. Update student")
         print("5. Delete student")
         print("6. Save records")
-        print("7. Exit\n")
+        print("7. Export to CSV file")
+        print("8. Exit\n")
 
         choice = input("Enter your choice: ").strip()
 
@@ -394,6 +428,8 @@ def main():
         elif choice == "6":
             save_record(students)
         elif choice == "7":
+            export_to_cvs(students)
+        elif choice == "8":
             save_record(students)       # auto-save before exiting
             print("Exiting the program. Good Bye...!")
             break                       # exits the while loop → program ends
